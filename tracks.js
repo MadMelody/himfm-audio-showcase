@@ -6,10 +6,6 @@ window.HIMFM_TRACKS = {
       "number": "01",
       "tracks": [
         {
-          "title": "BASIC ID",
-          "file": "ХИМFM_Джингл (вок)_Theme 01_1_BASIC_ID.mp3"
-        },
-        {
           "title": "SHOTGUN",
           "file": "ХИМFM_Джингл (вок)_Theme 01_1_SHOTGUN.mp3"
         },
@@ -205,6 +201,10 @@ window.HIMFM_TRACKS = {
     {
       "number": "13",
       "tracks": [
+        {
+          "title": "SHOTGUN 2",
+          "file": "ХИМFM_Джингл (вок)_Theme 13_1_SHOTGUN 2.mp3"
+        },
         {
           "title": "SHOTGUN",
           "file": "ХИМFM_Джингл (вок)_Theme 13_1_SHOTGUN.mp3"
