@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ХИМFM — аудио-витрина</title>
+  <style>
+    :root {
+      --bg: #111111;
+      --bg-soft: #171717;
+      --card: #202020;
+      --card-2: #262626;
+      --line: #3a3a3a;
+      --text: #f2f2f2;
+      --muted: #a7a7a7;
+      --muted-2: #777777;
+      --accent: #cfcfcf;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a { color: inherit; }
+
+    .page {
+      min-height: 100vh;
+      padding: 32px 18px 56px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 32%),
+        linear-gradient(135deg, #101010 0%, #191919 42%, #0e0e0e 100%);
+    }
+
+    .wrap {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 28px;
+      min-height: 340px;
+      padding: 38px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(120deg, rgba(36,36,36,0.96), rgba(24,24,24,0.88)),
+        url("cover.jpg");
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -140px;
+      top: -120px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.045);
+      filter: blur(4px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+    }
+
+    .kicker {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.22);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #dadada;
+      box-shadow: 0 0 16px rgba(255,255,255,0.55);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0 0 18px;
+      font-size: clamp(38px, 6vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 0;
+      color: #d0d0d0;
+      font-size: clamp(16px, 1.75vw, 20px);
+      line-height: 1.55;
+    }
+
+    .visual {
+      position: relative;
+      z-index: 1;
+      align-self: stretch;
+      display: grid;
+      place-items: center;
+      min-height: 230px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.015)),
+        rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+
+    .bars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 160px;
+      opacity: 0.78;
+    }
+
+    .bar {
+      width: 12px;
+      border-radius: 999px;
+      background: linear-gradient(to top, rgba(255,255,255,0.18), rgba(255,255,255,0.82));
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+    .bar:nth-child(1) { height: 38px; animation-delay: 0.05s; }
+    .bar:nth-child(2) { height: 78px; animation-delay: 0.12s; }
+    .bar:nth-child(3) { height: 118px; animation-delay: 0.2s; }
+    .bar:nth-child(4) { height: 62px; animation-delay: 0.28s; }
+    .bar:nth-child(5) { height: 142px; animation-delay: 0.36s; }
+    .bar:nth-child(6) { height: 88px; animation-delay: 0.44s; }
+    .bar:nth-child(7) { height: 52px; animation-delay: 0.52s; }
+    .bar:nth-child(8) { height: 112px; animation-delay: 0.6s; }
+    .bar:nth-child(9) { height: 74px; animation-delay: 0.68s; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scaleY(0.75); opacity: 0.55; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0 34px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 28px;
+      padding: 14px 0;
+      background: linear-gradient(to bottom, rgba(17,17,17,0.96), rgba(17,17,17,0.76));
+      backdrop-filter: blur(8px);
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      color: #dadada;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #1d1d1d;
+      font-size: 14px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin: 34px 0 16px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(28px, 3.2vw, 42px);
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      max-width: 540px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .theme-card, .jingle-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, #222, #1d1d1d);
+      overflow: hidden;
+    }
+
+    .theme-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, var(--theme-color, #1f1552), var(--theme-color-deep, #130d36));
+    }
+
+    .theme-title {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.025em;
+    }
+
+    .theme-count {
+      flex: 0 0 auto;
+      align-self: flex-start;
+      padding: 6px 10px;
+      color: #d9d9d9;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+    }
+
+    .track-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .track {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.42fr) minmax(260px, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.065);
+    }
+
+    .track:last-child { border-bottom: 0; }
+
+    .track-name {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .track-name strong {
+      font-size: 15px;
+      line-height: 1.28;
+    }
+
+
+    .player-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    audio {
+      width: 100%;
+      height: 38px;
+      filter: grayscale(1);
+    }
+
+    .jingles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .jingle-card {
+      padding: 18px;
+    }
+
+    .jingle-card .track {
+      grid-template-columns: minmax(150px, 0.42fr) minmax(260px, 1fr);
+      padding: 0;
+      border: 0;
+      gap: 14px;
+    }
+
+    .empty-message {
+      padding: 22px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: var(--radius-md);
+      color: var(--muted);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted-2);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 28px; }
+      .visual { min-height: 170px; }
+      .stats { grid-template-columns: 1fr; }
+      .themes-grid, .jingles-grid { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 8px; }
+    }
+
+    @media (max-width: 620px) {
+      .page { padding: 18px 12px 40px; }
+      .hero { border-radius: 22px; padding: 24px; }
+      .track { grid-template-columns: 1fr; gap: 10px; }
+      .theme-top { align-items: flex-start; }
+      .bars { transform: scale(0.82); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="wrap">
+      <section class="hero">
+        <div class="hero-content">
+          <div class="kicker"><span class="dot"></span> Audio showcase</div>
+          <h1>ХИМ FM</h1>
+          <p class="lead">
+            Добро пожаловать на страницу предварительного прослушивания тем и вокальных джинглов. Сервис пока доступен на ПК с доступом к корпоративному Dropbox. Тут можно
+            сравнить версии и выбрать подходящие звучание для создания новых элементов, эфира, или ролика. Приятного прослушивния!
+          </p>
+        </div>
+        <div class="visual" aria-label="Декоративная аудио-графика">
+          <div class="bars" aria-hidden="true">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats" id="summary"></section>
+
+      <nav class="nav" aria-label="Навигация по странице">
+        <a href="#themes">Музыкальные темы</a>
+        <a href="#vocal-jingles">Вокальные джинглы</a>
+      </nav>
+
+      <section id="themes">
+        <div class="section-head">
+          <h2>Музыкальные темы</h2>
+          <p>Треки сгруппированы по темам. Внутри каждой темы можно прослушать версии и сравнить звучание.</p>
+        </div>
+        <div class="themes-grid" id="themesGrid"></div>
+      </section>
+
+      <section id="vocal-jingles">
+        <div class="section-head">
+          <h2>Вокальные джинглы</h2>
+          <p>Отдельная группа вокальных джинглов для быстрого прослушивания и сравнения версий.</p>
+        </div>
+        <div class="jingles-grid" id="jinglesGrid"></div>
+      </section>
+
+
+      <footer class="footer">© 2026 Название проекта</footer>
+    </div>
+  </main>
+
+
+  <script src="tracks.js"></script>
+  <script>
+    const AUDIO_FOLDER = window.HIMFM_AUDIO_FOLDER || "OUT/";
+    const AUDIO_DATA = window.HIMFM_TRACKS || { themes: [], vocalJingles: [] };
+
+    const themes = Array.isArray(AUDIO_DATA.themes) ? AUDIO_DATA.themes : [];
+    const vocalJingles = Array.isArray(AUDIO_DATA.vocalJingles) ? AUDIO_DATA.vocalJingles : [];
+
+    function encodeLocalPath(fileName) {
+      return AUDIO_FOLDER + encodeURIComponent(fileName).replace(/%2F/g, "/");
+    }
+
+    function getTrackFile(track) {
+      return typeof track === "string" ? track : track.file;
+    }
+
+    function getTrackTitle(track) {
+      if (typeof track === "object" && track.title) return track.title;
+      return makeVariantName(getTrackFile(track));
+    }
+
+    function makeVariantName(fileName) {
+      let name = fileName
+        .replace("ХИМFM_Джингл (вок)_", "")
+        .replace(/\.(mp3|wav|m4a|ogg)$/i, "")
+        .replace(/^Theme\s\d+_?/, "")
+        .replace(/^\d+[_\s-]+/, "")
+        .replace(/^Круценко_/, "Круценко ")
+        .replaceAll("_", " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return name || fileName;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function makeTrack(track) {
+      const fileName = getTrackFile(track);
+      const title = getTrackTitle(track);
+      const src = encodeLocalPath(fileName);
+
+      return `
+        <div class="track">
+          <div class="track-name">
+            <strong>${escapeHtml(title)}</strong>
+          </div>
+          <div class="player-wrap">
+            <audio controls preload="none">
+              <source src="${src}" type="audio/mpeg">
+              Ваш браузер не поддерживает аудио-плеер.
+            </audio>
+          </div>
+        </div>
+      `;
+    }
+
+    function shadeThemeColor(index) {
+      const base = { r: 31, g: 21, b: 82 }; // #1f1552
+      const factor = Math.max(0.22, 1 - index * 0.065);
+      const r = Math.round(base.r * factor);
+      const g = Math.round(base.g * factor);
+      const b = Math.round(base.b * factor);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function deeperThemeColor(index) {
+      const base = { r: 18, g: 12, b: 52 };
+      const factor = Math.max(0.18, 1 - index * 0.07);
+      const r = Math.round(base.r * factor);
+      const g = Math.round(base.g * factor);
+      const b = Math.round(base.b * factor);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function renderThemes() {
+      const grid = document.getElementById("themesGrid");
+
+      if (!themes.length) {
+        grid.innerHTML = `<div class="empty-message">Темы пока не найдены. Положите аудиофайлы в папку OUT и запустите обновление сайта.</div>`;
+        return;
+      }
+
+      grid.innerHTML = themes.map((theme, index) => `
+        <article class="theme-card" style="--theme-color: ${shadeThemeColor(index)}; --theme-color-deep: ${deeperThemeColor(index)};">
+          <div class="theme-top">
+            <h3 class="theme-title">Theme ${escapeHtml(theme.number)}</h3>
+            <span class="theme-count">${theme.tracks.length} ${plural(theme.tracks.length, ["версия", "версии", "версий"])}</span>
+          </div>
+          <div class="track-list">
+            ${theme.tracks.map(makeTrack).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderJingles() {
+      const grid = document.getElementById("jinglesGrid");
+
+      if (!vocalJingles.length) {
+        grid.innerHTML = `<div class="empty-message">Вокальные джинглы пока не найдены.</div>`;
+        return;
+      }
+
+      grid.innerHTML = vocalJingles.map(track => `
+        <article class="jingle-card">
+          ${makeTrack(track)}
+        </article>
+      `).join("");
+    }
+
+    function plural(number, titles) {
+      const cases = [2, 0, 1, 1, 1, 2];
+      return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[Math.min(number % 10, 5)]];
+    }
+
+    function renderStats() {
+      const totalThemes = themes.length;
+      const totalThemeTracks = themes.reduce((sum, theme) => sum + theme.tracks.length, 0);
+      const totalJingles = vocalJingles.length;
+      document.getElementById("summary").innerHTML = `
+        <div class="stat"><strong>${totalThemes}</strong><span>тем</span></div>
+        <div class="stat"><strong>${totalThemeTracks}</strong><span>треков в музыкальных темах</span></div>
+        <div class="stat"><strong>${totalJingles}</strong><span>вокальных джинглов</span></div>
+      `;
+    }
+
+    function stopOtherPlayers() {
+      const audioPlayers = document.querySelectorAll("audio");
+      audioPlayers.forEach(currentAudio => {
+        currentAudio.addEventListener("play", () => {
+          audioPlayers.forEach(otherAudio => {
+            if (otherAudio !== currentAudio) {
+              otherAudio.pause();
+              otherAudio.currentTime = 0;
+            }
+          });
+        });
+      });
+    }
+
+    renderStats();
+    renderThemes();
+    renderJingles();
+    stopOtherPlayers();
+  </script>
+</body>
+</html>
